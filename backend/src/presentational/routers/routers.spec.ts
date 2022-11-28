@@ -1,9 +1,11 @@
-import { HttpResponse } from "../helpers/http-reponse";
-import { InvalidParamError } from "../errors/invalid-param";
+import { HttpResponse } from "../../utils/errors/http-reponse";
+import { InvalidParamError } from "../../utils/errors/invalid-param";
+import { AuthUseCase } from "../../domain/useCases/auth-useCase";
 
 export default class LoginRouter {
-  constructor(private emailValidator: EmailValidatorSpy) {
+  constructor(private emailValidator: EmailValidatorSpy, private authUseCase?: AuthUseCase) {
     this.emailValidator = emailValidator;
+    this.authUseCase = authUseCase
   }
 
   async login(email: string, password: string) {

@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "../errors/unauthorized-errors";
+import { UnauthorizedError } from "./unauthorized-errors";
 
 export class HttpResponse {
   static ok(body: any) {
@@ -15,6 +15,14 @@ export class HttpResponse {
         error: error.message,
       },
     };
+  }
+  static notFound(error: {message: string}){
+    return {
+      statusCode: 400,
+      body: {
+        error: error.message
+      }
+    }
   }
   static unauthotizedError() {
     return {
