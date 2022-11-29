@@ -3,7 +3,7 @@ import { UnauthorizedError } from "./unauthorized-errors";
 export class HttpResponse {
   static ok(body: any) {
     return {
-      stateCode: 200,
+      statusCode: 200,
       body,
     };
   }
