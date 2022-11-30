@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 
-export default class ExpressAdapter {
-   adapt(router: any) {
-    return async (req: Request, res: Response) => {
-      const httpRequest = {
-        body: req.body,
-      };
-      const httpResponse = await router.route(httpRequest);
-      res.status(httpResponse.statusCode).json(httpResponse.body);
+const adapt= (controller: any) => {
+  return async (req: Request, res: Response) => {
+    const httpRequest: any = {
+      body: req.body,
     };
-  }
-}
+    const httpResponse = await controller.login(httpRequest);
+    res.status(httpResponse.statusCode).json(httpResponse.body);
+  };
+};
+
+
+export default adapt
