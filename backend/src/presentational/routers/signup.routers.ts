@@ -1,50 +1,34 @@
 import { emailValidator } from "../../protocols/email-validator";
-import { emailAlreayUsed } from "../../utils/errors/email-already-used-error";
-import { HttpResponse } from "../../utils/errors/http-reponse";
-import { InvalidParamError } from "../../utils/errors/invalid-param";
-import { NotEqualError } from "../../utils/errors/not-equal-error";
+import {
+  emailAlreayUsed,
+  HttpResponse,
+  InvalidParamError,
+  NotEqualError,
+} from "../../utils/errors";
 import { insertUser } from "../protocols/InsertUser";
 import { verifyEmailAlreadyBeenUsed } from "../protocols/VerifyEmailAlreadyBeenUsed";
-
-interface user {
-  email: string;
-  firstName: string;
-  lastName: string;
-  confirmPassword: string;
-  password: string;
-}
+import { encrypter } from "../../protocols/encrypter";
+import { userSignup } from "../protocols/userSignup";
 
 export class SignupRouter {
   constructor(
     private emailValidator: emailValidator,
     private verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed,
-    private insertUser: insertUser
+    private insertUser: insertUser,
+    private encrypter: encrypter,
+    private authUseCase: authUseCase
   ) {
     this.emailValidator = emailValidator;
     this.verifyEmailAlreadyBeenUsed = verifyEmailAlreadyBeenUsed;
     this.insertUser = insertUser;
+    this.encrypter = encrypter;
   }
 
-  async signup({
-    email,
-    firstName,
-    lastName,
-    confirmPassword,
-    password,
-  }: user) {
-    if (!email) return HttpResponse.badRequest(new InvalidParamError("email"));
-
-    if (!firstName)
-      return HttpResponse.badRequest(new InvalidParamError("first name"));
-
-    if (!lastName)
-      return HttpResponse.badRequest(new InvalidParamError("last name"));
-
-    if (!password)
-      return HttpResponse.badRequest(new InvalidParamError("password"));
-
-    if (!confirmPassword)
-      return HttpResponse.badRequest(new InvalidParamError("confirm password"));
+  async signup(body: userSignup) {
+    for (let item in body) {
+      if (!item) return HttpResponse.badRequest(new InvalidParamError(item));
+    }
+    const { email, password, confirmPassword, firstName, lastName } = body;
 
     if (password !== confirmPassword)
       return HttpResponse.badRequest(new NotEqualError());
@@ -56,14 +40,17 @@ export class SignupRouter {
 
     const verify = await this.verifyEmailAlreadyBeenUsed.verify(email);
     if (!verify) return HttpResponse.badRequest(new emailAlreayUsed());
-    
+
+    const hashPassword = await this.encrypter.genHash(password);
+
     const user = await this.insertUser.save({
       email,
       firstName,
       lastName,
-      password,
+      password: hashPassword,
     });
 
-    return;
+    const accessToken = await this.authUseCase.auth(email, password);
+    return { accessToken, user };
   }
 }
