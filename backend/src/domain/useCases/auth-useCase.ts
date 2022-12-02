@@ -19,7 +19,7 @@ export class AuthUseCase {
     const user = await this.loadUserRepository.load(email);
     if (!user) throw HttpResponse.notFound(new NotFoundError("User"));
     const isValid = await this.encrypter.compare(password, user.password);
-    if (isValid) {
+    if (isValid && user.id) {
       const accessToken = await this.generateToken.generate(user.id);
       return accessToken;
     }

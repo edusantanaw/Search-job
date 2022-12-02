@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "city" DROP NOT NULL,
+ALTER COLUMN "phoneNumber" DROP NOT NULL,
+ALTER COLUMN "perfilPhoto" DROP NOT NULL;

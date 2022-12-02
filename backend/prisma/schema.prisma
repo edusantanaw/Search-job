@@ -16,7 +16,7 @@ model User {
   password String
   firstName String
   lastName String
-  city String
-  phoneNumber String
-  perfilPhoto String
+  city String?
+  phoneNumber String?
+  perfilPhoto String?
 }

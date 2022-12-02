@@ -11,8 +11,10 @@ export default class LoginRouter {
     this.authUseCase = authUseCase;
   }
 
-  async login(email: string, password: string) {
-    if(!email || !password) return HttpResponse.badRequest(new InvalidParamError("email"))
+  async login({ email, password }: { email: string; password: string }) {
+    if (!email || !password)
+      return HttpResponse.badRequest(new InvalidParamError("email"));
+
     if (email.length === 0)
       return HttpResponse.badRequest(new InvalidParamError("email"));
 

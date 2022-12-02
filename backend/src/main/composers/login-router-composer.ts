@@ -1,7 +1,7 @@
 import { EmailValidator } from "../../protocols/email-validator";
 import { AuthUseCase } from "../../domain/useCases/auth-useCase";
 import { LoadUserRepository } from "../../infra/repositores/load-user-repository";
-import LoginRouter from "../../presentational/routers/routers";
+import LoginRouter from "../../presentational/routers/signin.routers";
 import { Encrypter } from "../../utils/helpers/encrypter";
 import { GenerateToken } from "../../utils/helpers/token-generate";
 
