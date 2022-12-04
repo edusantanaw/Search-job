@@ -1,15 +1,8 @@
-interface authUseCase {
-  auth: (
-    email: string,
-    password: string
-  ) => Promise<
-    | string
-    | {
+interface authUseCase{
+    auth: (email: string, password: string) => Promise<string | {
         statusCode: number;
         body: {
-          error: string;
+            error: string;
         };
-      }
-    | null
-  >;
+    } | null>
 }

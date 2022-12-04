@@ -3,11 +3,9 @@ import { HttpResponse, InvalidParamError } from "../../utils/errors";
 
 export default class LoginRouter {
   constructor(
-    public authUseCase: authUseCase,
-    public emailValidator: emailValidator
+    private readonly authUseCase: authUseCase,
+    private readonly emailValidator: emailValidator
   ) {
-    this.emailValidator = emailValidator;
-    this.authUseCase = authUseCase;
   }
 
   async route({ email, password }: { email: string; password: string }) {

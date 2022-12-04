@@ -1,12 +1,12 @@
 import { NotFoundError } from "../../utils/errors/not-found";
 import { encrypter } from "../../protocols/encrypter";
 import { generateToken } from "../../protocols/generateToken";
-import { loadUserRepository } from "../../protocols/LoadUserRepository";
+import { userRepository } from "../../protocols/UserRepository";
 import { HttpResponse } from "../../utils/errors/http-reponse";
 
 export class AuthUseCase {
   constructor(
-    private loadUserRepository: loadUserRepository,
+    private loadUserRepository: userRepository,
     private encrypter: encrypter,
     private generateToken: generateToken
   ) {
@@ -16,7 +16,7 @@ export class AuthUseCase {
   }
 
   async auth(email: string, password: string) {
-    const user = await this.loadUserRepository.load(email);
+    const user = await this.loadUserRepository.loadByEmail(email);
 
     if (!user) return HttpResponse.notFound(new NotFoundError("User"));
 

@@ -12,17 +12,12 @@ import { userSignup } from "../protocols/userSignup";
 
 export class SignupRouter {
   constructor(
-    private emailValidator: emailValidator,
-    private verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed,
-    private insertUser: insertUser,
-    private encrypter: encrypter,
-    private authUseCase: authUseCase
-  ) {
-    this.emailValidator = emailValidator;
-    this.verifyEmailAlreadyBeenUsed = verifyEmailAlreadyBeenUsed;
-    this.insertUser = insertUser;
-    this.encrypter = encrypter;
-  }
+    private readonly emailValidator: emailValidator,
+    private readonly verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed,
+    private readonly insertUser: insertUser,
+    private readonly encrypter: encrypter,
+    private readonly authUseCase: authUseCase
+  ) {}
 
   async route(body: userSignup) {
     for (let item in body) {
@@ -52,12 +47,12 @@ export class SignupRouter {
 
     const accessToken = await this.authUseCase.auth(email, password);
 
-    if (typeof accessToken !== "string") {
+    if (typeof accessToken !== "string" && accessToken) {
       return {
-        statusCode: accessToken?.statusCode,
-        body: accessToken?.body,
+        statusCode: accessToken.statusCode,
+        body: accessToken.body,
       };
     }
-    return { accessToken, user };
+    return HttpResponse.ok({ accessToken, user });
   }
 }

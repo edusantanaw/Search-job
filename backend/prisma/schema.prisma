@@ -11,12 +11,41 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  password String
-  firstName String
-  lastName String
-  city String?
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  firstName   String
+  lastName    String
+  city        String?
   phoneNumber String?
   perfilPhoto String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ApplyJo     ApplyJo[]
+}
+
+model Company {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  perfilLogo  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Job         Job[]
+}
+
+model Job {
+  id          String    @id @default(uuid())
+  vacancyFor  String
+  CompanyName Company   @relation(fields: [CompanyId], references: [id])
+  CompanyId   String
+  ApplyJo     ApplyJo[]
+}
+
+model ApplyJo {
+  id          String @id @default(uuid())
+  job         Job    @relation(fields: [jobId], references: [id])
+  jobId       String
+  candidate   User   @relation(fields: [candidateId], references: [id])
+  candidateId String
 }

@@ -1,22 +1,22 @@
 import { AuthUseCase } from "../../domain/useCases/auth-useCase";
-import { InsertUsert } from "../../infra/repositores/insert-user";
-import { LoadUserRepository } from "../../infra/repositores/load-user-repository";
+import { UserRepository } from "../../infra/repositores/user-repository";
 import { VerifyEmailAlreadyBeenUsed } from "../../presentational/helpers/verifyEmailAlreadyBeenUsed";
 import { SignupRouter } from "../../presentational/routers/signup.routers";
 import { EmailValidator } from "../../utils/helpers/email-validator";
 import { Encrypter } from "../../utils/helpers/encrypter";
 import { GenerateToken } from "../../utils/helpers/token-generate";
 
-export class SignupRouterComposer {
+export default class SignupRouterComposer {
   static compose() {
     const emailValidator = new EmailValidator();
+    const userRepository = new UserRepository()
     const verifyEmailAlreadyBeenUsed = new VerifyEmailAlreadyBeenUsed(
-      new LoadUserRepository()
+     userRepository
     );
-    const insertUser = new InsertUsert();
     const encrypter = new Encrypter();
+    
     const authUseCase = new AuthUseCase(
-      new LoadUserRepository(),
+     userRepository,
       encrypter,
       new GenerateToken("secret")
     );
@@ -24,7 +24,7 @@ export class SignupRouterComposer {
     return new SignupRouter(
       emailValidator,
       verifyEmailAlreadyBeenUsed,
-      insertUser,
+      userRepository,
       encrypter,
       authUseCase
     );
