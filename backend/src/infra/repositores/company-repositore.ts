@@ -1,3 +1,4 @@
+import { Company } from "@prisma/client";
 import { company, client } from "../../prisma/client";
 import { companyRegister } from "../../protocols/companyRegister";
 
@@ -19,10 +20,20 @@ export class CompanyRepository {
   }
 
   async searchCompanyByName(name: string) {
-    const companyResponse = await client.$queryRaw`
+    const companyResponse: Company = await client.$queryRaw`
         select * from company
         where name like ${`%${name}%`}
     `;
     return companyResponse;
+  }
+
+  async loadCompanyByEmail(email: string) {
+    const companyResponse = await company.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (companyResponse) return companyResponse;
+    return null;
   }
 }
