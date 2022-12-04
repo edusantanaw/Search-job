@@ -1,4 +1,4 @@
-import { NotFoundError } from "@prisma/client/runtime";
+import { NotFoundError } from "../../utils/errors/not-found";
 import { encrypter } from "../../protocols/encrypter";
 import { generateToken } from "../../protocols/generateToken";
 import { loadUserRepository } from "../../protocols/LoadUserRepository";
@@ -17,12 +17,16 @@ export class AuthUseCase {
 
   async auth(email: string, password: string) {
     const user = await this.loadUserRepository.load(email);
-    if (!user) throw HttpResponse.notFound(new NotFoundError("User"));
+
+    if (!user) return HttpResponse.notFound(new NotFoundError("User"));
+
     const isValid = await this.encrypter.compare(password, user.password);
-    if (isValid && user.id) {
-      const accessToken = await this.generateToken.generate(user.id);
-      return accessToken;
-    }
-    return null;
+
+    if (!isValid)
+      return HttpResponse.badRequest({ message: "Email/password is invalid!" });
+
+    const accessToken = await this.generateToken.generate(user.id ? user.id: "" );
+
+    return accessToken;
   }
 }

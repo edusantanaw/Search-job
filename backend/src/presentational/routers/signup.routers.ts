@@ -24,17 +24,17 @@ export class SignupRouter {
     this.encrypter = encrypter;
   }
 
-  async signup(body: userSignup) {
+  async route(body: userSignup) {
     for (let item in body) {
       if (!item) return HttpResponse.badRequest(new InvalidParamError(item));
     }
+
     const { email, password, confirmPassword, firstName, lastName } = body;
 
     if (password !== confirmPassword)
       return HttpResponse.badRequest(new NotEqualError());
 
     const isValid = this.emailValidator.isValid(email);
-
     if (!isValid)
       return HttpResponse.badRequest(new InvalidParamError("email"));
 
@@ -51,6 +51,13 @@ export class SignupRouter {
     });
 
     const accessToken = await this.authUseCase.auth(email, password);
+
+    if (typeof accessToken !== "string") {
+      return {
+        statusCode: accessToken?.statusCode,
+        body: accessToken?.body,
+      };
+    }
     return { accessToken, user };
   }
 }

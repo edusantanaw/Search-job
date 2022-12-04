@@ -1,8 +1,8 @@
 import { user } from "../../prisma/client";
-import { User } from "../../protocols/user";
+import { userRepository } from "../../protocols/user";
 
 export class InsertUsert {
-  async save(data: User) {
+  async save(data: userRepository) {
     if (data) {
       const newUser = await user.create({
         data: data,

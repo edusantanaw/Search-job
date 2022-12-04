@@ -1,8 +1,7 @@
-
-const validator = require("validator");
+import validator from "validator";
 
 export class EmailValidator {
-  isValid(email: string) {
+   isValid(email: string) {
     return validator.isEmail(email);
   }
 }
