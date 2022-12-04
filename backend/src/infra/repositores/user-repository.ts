@@ -12,12 +12,9 @@ export class UserRepository {
   }
 
   async save(data: User) {
-    if (data) {
-      const newUser = await user.create({
-        data: data,
-      });
-      return newUser;
-    }
-    return null;
+    const newUser = await user.create({
+      data: data,
+    });
+    return newUser;
   }
 }

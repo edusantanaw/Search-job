@@ -1,6 +1,6 @@
 import { AuthUseCase } from "../../domain/useCases/auth-useCase";
 import { UserRepository } from "../../infra/repositores/user-repository";
-import LoginRouter from "../../presentational/routers/signin.routers";
+import LoginRouter from "../../presentational/routers/auth/signin.routers";
 import { EmailValidator } from "../../utils/helpers/email-validator";
 import { Encrypter } from "../../utils/helpers/encrypter";
 import { GenerateToken } from "../../utils/helpers/token-generate";

@@ -1,5 +1,5 @@
-import { emailValidator } from "../../protocols/email-validator";
-import { HttpResponse, InvalidParamError } from "../../utils/errors";
+import { emailValidator } from "../../../protocols/email-validator";
+import { HttpResponse, InvalidParamError } from "../../../utils/errors";
 
 export default class LoginRouter {
   constructor(

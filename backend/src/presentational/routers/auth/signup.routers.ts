@@ -1,21 +1,21 @@
-import { emailValidator } from "../../protocols/email-validator";
+import { emailValidator } from "../../../protocols/email-validator";
 import {
   emailAlreadyUsed,
   HttpResponse,
   InvalidParamError,
   NotEqualError,
-} from "../../utils/errors";
-import { insertUser } from "../protocols/InsertUser";
-import { verifyEmailAlreadyBeenUsed } from "../protocols/VerifyEmailAlreadyBeenUsed";
-import { encrypter } from "../../protocols/encrypter";
-import { userSignup } from "../protocols/userSignup";
-import { generateToken } from "../../protocols/generateToken";
+} from "../../../utils/errors";
+import { verifyEmailAlreadyBeenUsed } from "../../protocols/VerifyEmailAlreadyBeenUsed";
+import { encrypter } from "../../../protocols/encrypter";
+import { userSignup } from "../../protocols/userSignup";
+import { generateToken } from "../../../protocols/generateToken";
+import { userRepository } from "../../../protocols/UserRepository";
 
 export class SignupRouter {
   constructor(
     private readonly emailValidator: emailValidator,
     private readonly verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed,
-    private readonly insertUser: insertUser,
+    private readonly userRepository: userRepository,
     private readonly encrypter: encrypter,
     private readonly generateToken: generateToken
   ) {}
@@ -48,13 +48,14 @@ export class SignupRouter {
 
     const hashPassword = await this.encrypter.genHash(password);
 
-    const user = await this.insertUser.save({
+    const user = await this.userRepository.save({
       email,
       firstName,
       lastName,
       password: hashPassword,
     });
-    const accessToken = await this.generateToken.generate(user.id);
+
+    const accessToken = user.id && (await this.generateToken.generate(user.id));
 
     return HttpResponse.ok({ accessToken, user });
   }
