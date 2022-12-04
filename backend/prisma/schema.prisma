@@ -21,7 +21,7 @@ model User {
   perfilPhoto String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  ApplyJo     ApplyJo[]
+  ApplyJob     ApplyJob[]
 }
 
 model Company {
@@ -39,10 +39,10 @@ model Job {
   vacancyFor  String
   CompanyName Company   @relation(fields: [CompanyId], references: [id])
   CompanyId   String
-  ApplyJo     ApplyJo[]
+  ApplyJob     ApplyJob[]
 }
 
-model ApplyJo {
+model ApplyJob {
   id          String @id @default(uuid())
   job         Job    @relation(fields: [jobId], references: [id])
   jobId       String

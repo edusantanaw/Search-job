@@ -15,18 +15,14 @@ export default class SignupRouterComposer {
     );
     const encrypter = new Encrypter();
     
-    const authUseCase = new AuthUseCase(
-     userRepository,
-      encrypter,
-      new GenerateToken("secret")
-    );
+      const generateToken = new GenerateToken("secret")
 
     return new SignupRouter(
       emailValidator,
       verifyEmailAlreadyBeenUsed,
       userRepository,
       encrypter,
-      authUseCase
+      generateToken
     );
   }
 }

@@ -1,6 +1,6 @@
 import { emailValidator } from "../../protocols/email-validator";
 import {
-  emailAlreayUsed,
+  emailAlreadyUsed,
   HttpResponse,
   InvalidParamError,
   NotEqualError,
@@ -9,6 +9,7 @@ import { insertUser } from "../protocols/InsertUser";
 import { verifyEmailAlreadyBeenUsed } from "../protocols/VerifyEmailAlreadyBeenUsed";
 import { encrypter } from "../../protocols/encrypter";
 import { userSignup } from "../protocols/userSignup";
+import { generateToken } from "../../protocols/generateToken";
 
 export class SignupRouter {
   constructor(
@@ -16,15 +17,24 @@ export class SignupRouter {
     private readonly verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed,
     private readonly insertUser: insertUser,
     private readonly encrypter: encrypter,
-    private readonly authUseCase: authUseCase
+    private readonly generateToken: generateToken
   ) {}
 
   async route(body: userSignup) {
-    for (let item in body) {
-      if (!item) return HttpResponse.badRequest(new InvalidParamError(item));
-    }
-
     const { email, password, confirmPassword, firstName, lastName } = body;
+    if (!firstName)
+      return HttpResponse.badRequest(new InvalidParamError("firstName"));
+
+    if (!lastName)
+      return HttpResponse.badRequest(new InvalidParamError("lastName"));
+
+    if (!email) return HttpResponse.badRequest(new InvalidParamError("email"));
+
+    if (!password)
+      return HttpResponse.badRequest(new InvalidParamError("password"));
+
+    if (!confirmPassword)
+      return HttpResponse.badRequest(new InvalidParamError("confirmPassword"));
 
     if (password !== confirmPassword)
       return HttpResponse.badRequest(new NotEqualError());
@@ -34,7 +44,7 @@ export class SignupRouter {
       return HttpResponse.badRequest(new InvalidParamError("email"));
 
     const verify = await this.verifyEmailAlreadyBeenUsed.verify(email);
-    if (!verify) return HttpResponse.badRequest(new emailAlreayUsed());
+    if (verify) return HttpResponse.badRequest(new emailAlreadyUsed());
 
     const hashPassword = await this.encrypter.genHash(password);
 
@@ -44,15 +54,8 @@ export class SignupRouter {
       lastName,
       password: hashPassword,
     });
+    const accessToken = await this.generateToken.generate(user.id);
 
-    const accessToken = await this.authUseCase.auth(email, password);
-
-    if (typeof accessToken !== "string" && accessToken) {
-      return {
-        statusCode: accessToken.statusCode,
-        body: accessToken.body,
-      };
-    }
     return HttpResponse.ok({ accessToken, user });
   }
 }
