@@ -1,4 +1,3 @@
-import { AuthUseCase } from "../../domain/useCases/auth-useCase";
 import { UserRepository } from "../../infra/repositores/user-repository";
 import { VerifyEmailAlreadyBeenUsed } from "../../presentational/helpers/verifyEmailAlreadyBeenUsed";
 import { SignupRouter } from "../../presentational/routers/auth/signup.routers";
@@ -17,12 +16,12 @@ export default class SignupRouterComposer {
 
     const generateToken = new GenerateToken("secret");
 
-    return new SignupRouter(
+    return new SignupRouter({
       emailValidator,
       verifyEmailAlreadyBeenUsed,
       userRepository,
       encrypter,
-      generateToken
-    );
+      generateToken,
+    });
   }
 }

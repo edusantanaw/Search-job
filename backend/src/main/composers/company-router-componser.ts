@@ -7,6 +7,6 @@ export class CompanyRouterCompose {
     const emailValidator = new EmailValidator();
     const companyRepository = new CompanyRepository();
 
-    return new CompanyRegisterRouter(emailValidator, companyRepository);
+    return new CompanyRegisterRouter({ emailValidator, companyRepository });
   }
 }

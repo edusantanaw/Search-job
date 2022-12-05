@@ -16,6 +16,6 @@ export default class SigninRouterComposer {
       encrypter,
       generateToken
     );
-    return new LoginRouter(authUseCase, emailValidator);
+    return new LoginRouter({ authUseCase, emailValidator });
   }
 }

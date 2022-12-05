@@ -1,24 +1,19 @@
+import { createUserUseCase } from "../../../protocols/create-user-use0case";
 import { emailValidator } from "../../../protocols/email-validator";
 import {
-  emailAlreadyUsed,
   HttpResponse,
   InvalidParamError,
   NotEqualError,
 } from "../../../utils/errors";
-import { verifyEmailAlreadyBeenUsed } from "../../protocols/VerifyEmailAlreadyBeenUsed";
-import { encrypter } from "../../../protocols/encrypter";
 import { userSignup } from "../../protocols/userSignup";
-import { generateToken } from "../../../protocols/generateToken";
-import { userRepository } from "../../../protocols/UserRepository";
+
+type signup = {
+  emailValidator: emailValidator;
+  createUserUseCase: createUserUseCase;
+};
 
 export class SignupRouter {
-  constructor(
-    private readonly emailValidator: emailValidator,
-    private readonly verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed,
-    private readonly userRepository: userRepository,
-    private readonly encrypter: encrypter,
-    private readonly generateToken: generateToken
-  ) {}
+  constructor(private props: signup) {}
 
   async route(body: userSignup) {
     const { email, password, confirmPassword, firstName, lastName } = body;
@@ -39,23 +34,19 @@ export class SignupRouter {
     if (password !== confirmPassword)
       return HttpResponse.badRequest(new NotEqualError());
 
-    const isValid = this.emailValidator.isValid(email);
+    const isValid = this.props.emailValidator.isValid(email);
     if (!isValid)
       return HttpResponse.badRequest(new InvalidParamError("email"));
 
-    const verify = await this.verifyEmailAlreadyBeenUsed.verify(email);
-    if (verify) return HttpResponse.badRequest(new emailAlreadyUsed());
-
-    const hashPassword = await this.encrypter.genHash(password);
-
-    const user = await this.userRepository.save({
-      email,
+    const create = await this.props.createUserUseCase.create({
       firstName,
+      email,
       lastName,
-      password: hashPassword,
+      password,
     });
 
-    const accessToken = user.id && (await this.generateToken.generate(user.id));
+    if (!create) return create;
+    const { accessToken, user } = create;
 
     return HttpResponse.ok({ accessToken, user });
   }
