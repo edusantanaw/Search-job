@@ -6,6 +6,7 @@ import cors from "cors";
 app.use(cors({ credentials: true, origin: "" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 router(app);
 const port = process.env.Port || 5000;
 
