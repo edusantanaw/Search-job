@@ -1,4 +1,4 @@
-import { AuthUseCase } from "../../domain/useCases/auth-useCase";
+import { AuthUseCase } from "../../domain/useCases/user/auth-useCase";
 import { UserRepository } from "../../infra/repositores/user-repository";
 import LoginRouter from "../../presentational/routers/auth/signin.routers";
 import { EmailValidator } from "../../utils/helpers/email-validator";

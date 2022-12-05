@@ -1,5 +1,5 @@
 
 
 export interface generateToken {
-  generate: (id: string) => Promise<string>;
+  generate: (id: string) => string;
 }

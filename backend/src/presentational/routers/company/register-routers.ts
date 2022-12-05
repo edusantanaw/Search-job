@@ -1,13 +1,11 @@
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
-import {
-  companyRegister,
-  companyRepository,
-} from "../../../protocols/companyRegister";
+import { companyRegister } from "../../../protocols/companyRegister";
 import { emailValidator } from "../../../protocols/email-validator";
+import { CreateCompanyUseCase } from "../../../protocols/create-company-useCase";
 
 type registerRouter = {
-  companyRepository: companyRepository;
   emailValidator: emailValidator;
+  createCompanyUseCase: CreateCompanyUseCase;
 };
 
 export class CompanyRegisterRouter {
@@ -32,24 +30,14 @@ export class CompanyRegisterRouter {
 
     if (!this.props.emailValidator.isValid(email))
       return HttpResponse.badRequest(new InvalidParamError("email"));
-
-    const verifyIfEmail = await this.props.companyRepository.loadCompanyByEmail(
-      email
-    );
-    if (verifyIfEmail)
-      return HttpResponse.badRequest({
-        message: "Email is already been used!",
-      });
-
-    const company = await this.props.companyRepository.save({
-      name,
+    const company = await this.props.createCompanyUseCase.create({
       description,
-      perfilLogo,
-      ownerId,
       email,
+      name,
+      ownerId,
+      perfilLogo,
       phone,
     });
-
     return company;
   }
 }

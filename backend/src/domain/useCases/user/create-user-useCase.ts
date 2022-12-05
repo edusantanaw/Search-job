@@ -1,8 +1,8 @@
-import { verifyEmailAlreadyBeenUsed } from "../../presentational/protocols/VerifyEmailAlreadyBeenUsed";
-import { encrypter } from "../../protocols/encrypter";
-import { generateToken } from "../../protocols/generateToken";
-import { User, userRepository } from "../../protocols/UserRepository";
-import { emailAlreadyUsed, HttpResponse } from "../../utils/errors";
+import { verifyEmailAlreadyBeenUsed } from "../../../presentational/protocols/VerifyEmailAlreadyBeenUsed";
+import { encrypter } from "../../../protocols/encrypter";
+import { generateToken } from "../../../protocols/generateToken";
+import { User, userRepository } from "../../../protocols/UserRepository";
+import { emailAlreadyUsed, HttpResponse } from "../../../utils/errors";
 
 type createUser = {
   userRepository: userRepository;
@@ -18,7 +18,7 @@ export class CreateUserUseCase {
     const verify = await this.props.verifyEmailAlreadyBeenUsed.verify(
       data.email
     );
-    if (verify) return HttpResponse.badRequest(new emailAlreadyUsed());
+    if (verify) throw HttpResponse.badRequest(new emailAlreadyUsed());
 
     const hashPassword = await this.props.encrypter.genHash(data.password);
     data.password = hashPassword;
@@ -26,8 +26,7 @@ export class CreateUserUseCase {
       ...data,
     });
 
-    const accessToken =
-      user.id && (await this.props.generateToken.generate(user.id));
+    const accessToken = this.props.generateToken.generate(user.id || "");
 
     return { user, accessToken };
   }

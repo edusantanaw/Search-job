@@ -5,7 +5,8 @@ export class GenerateToken {
     this.secret = secret;
   }
 
-  async generate(id: string) {
-    return jwt.sign({ _id: id }, this.secret);
+   generate(id: string) {
+    const token = jwt.sign({ _id: id }, this.secret);
+    return token
   }
 }
