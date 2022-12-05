@@ -1,7 +1,7 @@
 import { NotFoundError } from "../../../utils/errors/not-found";
-import { encrypter } from "../../../protocols/encrypter";
-import { generateToken } from "../../../protocols/generateToken";
-import { userRepository } from "../../../protocols/UserRepository";
+import { encrypter } from "../../../protocols/utils/encrypter";
+import { generateToken } from "../../../protocols/utils/generateToken";
+import { userRepository } from "../../../protocols/repositorys/UserRepository";
 import { HttpResponse } from "../../../utils/errors/http-reponse";
 
 export class AuthUseCase {

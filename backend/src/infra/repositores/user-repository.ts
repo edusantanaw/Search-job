@@ -1,5 +1,5 @@
 import { user } from "../../prisma/client";
-import { User } from "../../protocols/UserRepository";
+import { User } from "../../protocols/repositorys/UserRepository";
 
 export class UserRepository {
   async loadByEmail(email: string) {

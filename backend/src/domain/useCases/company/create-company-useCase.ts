@@ -1,7 +1,7 @@
 import {
   companyRegister,
   companyRepository,
-} from "../../../protocols/companyRegister";
+} from "../../../protocols/useCases/companyRegister";
 import { HttpResponse } from "../../../utils/errors";
 
 export class CreateCompanyUseCase {

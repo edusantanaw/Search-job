@@ -1,5 +1,5 @@
-import { createUserUseCase } from "../../../protocols/create-user-use0case";
-import { emailValidator } from "../../../protocols/email-validator";
+import { createUserUseCase } from "../../../protocols/useCases/create-user-use0case";
+import { emailValidator } from "../../../protocols/utils/email-validator";
 import {
   HttpResponse,
   InvalidParamError,
@@ -50,7 +50,7 @@ export class SignupRouter {
       });
       const { accessToken, user } = create;
       return HttpResponse.ok({ accessToken, user });
-      
+
     } catch (error) {
       return error;
     }

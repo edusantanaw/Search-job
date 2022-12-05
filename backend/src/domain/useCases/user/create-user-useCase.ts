@@ -1,7 +1,7 @@
 import { verifyEmailAlreadyBeenUsed } from "../../../presentational/protocols/VerifyEmailAlreadyBeenUsed";
-import { encrypter } from "../../../protocols/encrypter";
-import { generateToken } from "../../../protocols/generateToken";
-import { User, userRepository } from "../../../protocols/UserRepository";
+import { encrypter } from "../../../protocols/utils/encrypter";
+import { generateToken } from "../../../protocols/utils/generateToken";
+import { User, userRepository } from "../../../protocols/repositorys/UserRepository";
 import { emailAlreadyUsed, HttpResponse } from "../../../utils/errors";
 
 type createUser = {

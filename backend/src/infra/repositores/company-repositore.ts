@@ -1,6 +1,6 @@
 import { Company } from "@prisma/client";
 import { company, client } from "../../prisma/client";
-import { companyRegister } from "../../protocols/companyRegister";
+import { companyRegister } from "../../protocols/useCases/companyRegister";
 
 export class CompanyRepository {
   async save(data: companyRegister) {

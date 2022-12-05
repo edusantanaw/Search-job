@@ -1,4 +1,4 @@
-import { emailValidator } from "../../../protocols/email-validator";
+import { emailValidator } from "../../../protocols/utils/email-validator";
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
 
 type LoginProps = {

@@ -1,4 +1,4 @@
-import { User } from "./UserRepository";
+import { User } from "../repositorys/UserRepository";
 
 export interface createUserUseCase {
   create: (data: User) => Promise<{
