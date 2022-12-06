@@ -12,11 +12,15 @@ type signup = {
   createUserUseCase: createUserUseCase;
 };
 
+type request = {
+  body: userSignup
+}
+
 export class SignupRouter {
   constructor(private props: signup) {}
 
-  async route(body: userSignup) {
-    const { email, password, confirmPassword, firstName, lastName } = body;
+  async signup(request: request) {
+    const { email, password, confirmPassword, firstName, lastName } = request.body;
     try {
       if (!firstName)
         return HttpResponse.badRequest(new InvalidParamError("firstName"));
@@ -50,7 +54,6 @@ export class SignupRouter {
       });
       const { accessToken, user } = create;
       return HttpResponse.ok({ accessToken, user });
-
     } catch (error) {
       return error;
     }

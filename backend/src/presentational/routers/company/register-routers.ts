@@ -8,11 +8,20 @@ type registerRouter = {
   createCompanyUseCase: CreateCompanyUseCase;
 };
 
+type request = {
+  body: companyRegister;
+  params: {
+    ownerId: string;
+  };
+};
+
 export class CompanyRegisterRouter {
   constructor(private props: registerRouter) {}
 
-  async route(body: companyRegister) {
-    const { name, description, perfilLogo, email, phone, ownerId } = body;
+  async register(request: request) {
+    const { name, description, perfilLogo, email, phone } = request.body;
+    const { ownerId } = request.params;
+
     if (name) return HttpResponse.badRequest(new InvalidParamError("name"));
 
     if (description)

@@ -6,10 +6,18 @@ type LoginProps = {
   emailValidator: emailValidator;
 };
 
+type request = {
+  body: {
+    email: string;
+    password: string;
+  };
+};
+
 export default class LoginRouter {
   constructor(private props: LoginProps) {}
 
-  async route({ email, password }: { email: string; password: string }) {
+  async signin(request: request) {
+    const { email, password } = request.body;
     if (!email) return HttpResponse.badRequest(new InvalidParamError("email"));
 
     if (!password)

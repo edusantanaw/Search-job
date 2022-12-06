@@ -26,4 +26,16 @@ export class JobRepository {
     `;
     return vancacys;
   }
+
+  async update(status: boolean, id: string) {
+    const updatedVancacy = await job.update({
+      where: {
+        id: id,
+      },
+      data: {
+        openStatus: status,
+      },
+    });
+    return updatedVancacy;
+  }
 }

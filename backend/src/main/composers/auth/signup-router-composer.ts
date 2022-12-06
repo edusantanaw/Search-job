@@ -1,10 +1,10 @@
-import { CreateUserUseCase } from "../../domain/useCases/user/create-user-useCase";
-import { UserRepository } from "../../infra/repositores/user-repository";
-import { VerifyEmailAlreadyBeenUsed } from "../../presentational/helpers/verifyEmailAlreadyBeenUsed";
-import { SignupRouter } from "../../presentational/routers/auth/signup.routers";
-import { EmailValidator } from "../../utils/helpers/email-validator";
-import { Encrypter } from "../../utils/helpers/encrypter";
-import { GenerateToken } from "../../utils/helpers/token-generate";
+import { CreateUserUseCase } from "../../../domain/useCases/user/create-user-useCase";
+import { UserRepository } from "../../../infra/repositores/user-repository";
+import { VerifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/verifyEmailAlreadyBeenUsed";
+import { SignupRouter } from "../../../presentational/routers/auth/signup.routers";
+import { EmailValidator } from "../../../utils/helpers/email-validator";
+import { Encrypter } from "../../../utils/helpers/encrypter";
+import { GenerateToken } from "../../../utils/helpers/token-generate";
 
 export default class SignupRouterComposer {
   static compose() {
