@@ -1,4 +1,4 @@
-import { CreateUserUseCase } from "../../../domain/useCases/user/create-user-useCase";
+import { UserUseCase } from "../../../domain/useCases/user/user-useCase";
 import { UserRepository } from "../../../infra/repositores/user-repository";
 import { VerifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/verifyEmailAlreadyBeenUsed";
 import { SignupRouter } from "../../../presentational/routers/auth/signup.routers";
@@ -15,7 +15,7 @@ export default class SignupRouterComposer {
     );
     const generateToken = new GenerateToken("secret");
     const encrypter = new Encrypter();
-    const createUserUseCase = new CreateUserUseCase({
+    const createUserUseCase = new UserUseCase({
       encrypter,
       generateToken,
       userRepository,

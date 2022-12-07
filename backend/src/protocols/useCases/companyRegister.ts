@@ -12,7 +12,7 @@ export interface companyRegister {
 
 export interface companyRepository {
   save: (data: companyRegister) => Promise<Company>;
-  loadCompanyById: (id: string) => Promise<Company | null>;
-  searchCompanyByName: (name: string) => Promise<Company | null>;
-  loadCompanyByEmail: (email: string) => Promise<Company | null>;
+  loadById: (id: string) => Promise<Company | null>;
+  searchByName: (name: string) => Promise<Company | null>;
+  loadByEmail: (email: string) => Promise<Company | null>;
 }

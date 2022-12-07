@@ -46,7 +46,7 @@ export class JobRouter {
     }
   }
 
-  async getAllVancacy() {
+  async getAll() {
     try {
       const vancacy = await this.props.jobUseCase.getAllVancacy();
       return vancacy;
@@ -55,7 +55,7 @@ export class JobRouter {
     }
   }
 
-  async getVancacyByid(request: request) {
+  async getByid(request: request) {
     const { id } = request.params;
     try {
       if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));

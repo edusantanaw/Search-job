@@ -17,4 +17,12 @@ export class UserRepository {
     });
     return newUser;
   }
+  async loadById(id: string) {
+    const userResponse = await user.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    return userResponse;
+  }
 }

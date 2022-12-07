@@ -11,7 +11,7 @@ type createUser = {
   verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed;
 };
 
-export class CreateUserUseCase {
+export class UserUseCase {
   constructor(private props: createUser) {}
 
   async create(data: User) {
@@ -29,5 +29,10 @@ export class CreateUserUseCase {
     const accessToken = this.props.generateToken.generate(user.id || "");
 
     return { user, accessToken };
+  }
+
+  async loadById(id: string){
+    const user = this.props.userRepository.loadById(id)
+    return user
   }
 }

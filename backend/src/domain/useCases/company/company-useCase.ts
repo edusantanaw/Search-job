@@ -2,15 +2,13 @@ import {
   companyRegister,
   companyRepository,
 } from "../../../protocols/useCases/companyRegister";
-import { HttpResponse } from "../../../utils/errors";
+import { HttpResponse, NotFoundError } from "../../../utils/errors";
 
-export class CreateCompanyUseCase {
+export class CompanyUseCase {
   constructor(private companyRepository: companyRepository) {}
 
   async create(data: companyRegister) {
-    const verifyIfEmail = await this.companyRepository.loadCompanyByEmail(
-      data.email
-    );
+    const verifyIfEmail = await this.companyRepository.loadByEmail(data.email);
     if (verifyIfEmail)
       throw HttpResponse.badRequest({
         message: "Email is already been used!",
@@ -20,5 +18,10 @@ export class CreateCompanyUseCase {
       ...data,
     });
     return company;
+  }
+
+  async getById(id: string) {
+    const company = await this.companyRepository.loadById(id);
+    if (!company) return HttpResponse.badRequest(new NotFoundError("company"));
   }
 }

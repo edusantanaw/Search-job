@@ -10,7 +10,7 @@ export class CompanyRepository {
     return companyResponse;
   }
 
-  async loadCompanyById(id: string) {
+  async loadById(id: string) {
     const companyResponse = await company.findFirst({
       where: {
         id: id,
@@ -19,7 +19,7 @@ export class CompanyRepository {
     return companyResponse;
   }
 
-  async searchCompanyByName(name: string) {
+  async searchByName(name: string) {
     const companyResponse: Company = await client.$queryRaw`
         select * from company
         where name like ${`%${name}%`}
@@ -27,7 +27,7 @@ export class CompanyRepository {
     return companyResponse;
   }
 
-  async loadCompanyByEmail(email: string) {
+  async loadByEmail(email: string) {
     const companyResponse = await company.findFirst({
       where: {
         email: email,

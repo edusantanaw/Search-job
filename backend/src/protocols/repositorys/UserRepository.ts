@@ -14,4 +14,5 @@ export interface User extends user {
 export interface userRepository {
   loadByEmail: (email: string) => Promise<User | null>;
   save: (data: user) => Promise<User>;
+  loadById: (id: string) => Promise<User | null>;
 }
