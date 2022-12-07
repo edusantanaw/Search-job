@@ -11,4 +11,5 @@ export interface jobRepository {
   getJobById: (id: string) => Promise<Job>;
   getJobsByName: (name: string) => Promise<Job[]>;
   update: (status: boolean, id: string) => Promise<Job | null>;
+  getAll: () => Promise<Job[] | null>;
 }

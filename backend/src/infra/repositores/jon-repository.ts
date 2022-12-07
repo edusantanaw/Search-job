@@ -38,4 +38,9 @@ export class JobRepository {
     });
     return updatedVancacy;
   }
+
+  async getAll() {
+    const vancacys = await job.findMany();
+    return vancacys;
+  }
 }

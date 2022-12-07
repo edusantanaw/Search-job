@@ -25,4 +25,16 @@ export class JobUseCase {
     const vacancy = await this.props.jobRepository.update(status, id);
     return vacancy;
   }
+
+  async getAll() {
+    const vacancy = await this.props.jobRepository.getAll();
+    if (!vacancy) throw HttpResponse.badRequest(new NotFoundError("jobs"));
+    return vacancy;
+  }
+
+  async getById(id: string) {
+    const vancacy = await this.props.jobRepository.getJobById(id);
+    if (!vancacy) throw HttpResponse.badRequest(new NotFoundError("vancacy"));
+    return vancacy;
+  }
 }

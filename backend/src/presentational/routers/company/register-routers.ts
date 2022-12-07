@@ -39,6 +39,7 @@ export class CompanyRegisterRouter {
 
     if (!this.props.emailValidator.isValid(email))
       return HttpResponse.badRequest(new InvalidParamError("email"));
+      
     const company = await this.props.createCompanyUseCase.create({
       description,
       email,
