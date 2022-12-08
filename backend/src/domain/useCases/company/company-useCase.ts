@@ -23,5 +23,6 @@ export class CompanyUseCase {
   async getById(id: string) {
     const company = await this.companyRepository.loadById(id);
     if (!company) return HttpResponse.badRequest(new NotFoundError("company"));
+    return this.companyRepository;
   }
 }

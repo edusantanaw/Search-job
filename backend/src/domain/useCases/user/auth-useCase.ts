@@ -4,11 +4,17 @@ import { generateToken } from "../../../protocols/utils/generateToken";
 import { userRepository } from "../../../protocols/repositorys/UserRepository";
 import { HttpResponse } from "../../../utils/errors/http-reponse";
 
-export class AuthUseCase {
+interface authUseCase {
+  loadUserRepository: userRepository;
+  encrypter: encrypter;
+  generateToken: generateToken;
+}
+
+export class AuthUseCase implements authUseCase {
   constructor(
-    private loadUserRepository: userRepository,
-    private encrypter: encrypter,
-    private generateToken: generateToken
+    public loadUserRepository: userRepository,
+    public encrypter: encrypter,
+    public generateToken: generateToken
   ) {
     this.loadUserRepository = loadUserRepository;
     this.encrypter = encrypter;
@@ -25,7 +31,7 @@ export class AuthUseCase {
     if (!isValid)
       return HttpResponse.badRequest({ message: "Email/password is invalid!" });
 
-    const accessToken =  this.generateToken.generate(user.id ? user.id: "" );
+    const accessToken = this.generateToken.generate(user.id ? user.id : "");
 
     return accessToken;
   }

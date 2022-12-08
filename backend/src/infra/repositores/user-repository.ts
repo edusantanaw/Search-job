@@ -25,4 +25,19 @@ export class UserRepository {
     });
     return userResponse;
   }
+
+  async loadAll() {
+    const users = await user.findMany();
+    return users;
+  }
+
+  async update(data: User) {
+    const userUpdated = await user.update({
+      where: {
+        id: data.id,
+      },
+      data: data,
+    });
+    return userUpdated;
+  }
 }

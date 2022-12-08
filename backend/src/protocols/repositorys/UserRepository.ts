@@ -9,10 +9,14 @@ export interface User extends user {
   id?: string;
   phoneNumber?: string | null;
   perfilPhoto?: string | null;
+  city: string | null;
+  password: string;
 }
 
 export interface userRepository {
   loadByEmail: (email: string) => Promise<User | null>;
   save: (data: user) => Promise<User>;
   loadById: (id: string) => Promise<User | null>;
+  update: (data: User) => Promise<User>;
+  loadAll: () => Promise<User[]>;
 }

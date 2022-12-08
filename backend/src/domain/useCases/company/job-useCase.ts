@@ -15,7 +15,6 @@ export class JobUseCase {
     openStatus: true; // open by default
   }) {
     const vancacy = await this.props.jobRepository.create(data);
-
     return vancacy;
   }
 
