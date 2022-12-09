@@ -1,10 +1,14 @@
-import { NextFunction, Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { HttpResponse } from "../../utils/errors";
 
-export function verifyTokenMiddleware(req: Request, next: NextFunction) {
+export function verifyTokenMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const getToken = req.headers.authorization;
   if (!getToken) return HttpResponse.unauthotizedError();
   const token = getToken.split(" ")[1];
   if (token) next();
-  return HttpResponse.unauthotizedError();
+  return res.status(401).json("Tokne invalid!");
 }
