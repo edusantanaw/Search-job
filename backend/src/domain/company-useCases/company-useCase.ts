@@ -2,7 +2,7 @@ import {
   companyRegister,
   companyRepository,
 } from "./protocols/companyRegister";
-import { HttpResponse, NotFoundError } from "../../../utils/errors";
+import { HttpResponse, NotFoundError } from "../../utils/errors";
 
 export class CompanyUseCase {
   constructor(private companyRepository: companyRepository) {}

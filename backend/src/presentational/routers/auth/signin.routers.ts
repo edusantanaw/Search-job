@@ -1,24 +1,22 @@
 import { emailValidator } from "../../../utils/protocols/email-validator";
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
-import { authUseCase } from "../../../domain/useCases/user/protocols/auth-useCases";
+import { authUseCase } from "../../../domain/user-useCases/protocols/auth-useCases";
 
 type LoginProps = {
   authUseCase: authUseCase;
   emailValidator: emailValidator;
 };
 
-type request = {
-  body: {
-    email: string;
-    password: string;
-  };
+type data = {
+  email: string;
+  password: string;
 };
 
 export default class LoginRouter {
   constructor(private props: LoginProps) {}
 
-  async signin(request: request) {
-    const { email, password } = request.body;
+  async signin(data: data) {
+    const { email, password } = data;
     if (!email) return HttpResponse.badRequest(new InvalidParamError("email"));
 
     if (!password)

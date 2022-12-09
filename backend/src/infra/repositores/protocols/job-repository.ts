@@ -8,8 +8,8 @@ export type jobParams = {
 
 export interface jobRepository {
   create: (data: jobParams) => Promise<Job>;
-  getJobById: (id: string) => Promise<Job>;
-  getJobsByName: (name: string) => Promise<Job[]>;
+  getJobById: (id: string) => Promise<Job | null>;
+  getJobsByName: (name: string) => Promise<Job[] | null>;
   update: (status: boolean, id: string) => Promise<Job | null>;
   getAll: () => Promise<Job[] | null>;
 }

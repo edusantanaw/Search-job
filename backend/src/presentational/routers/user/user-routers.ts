@@ -1,5 +1,4 @@
-import { User } from "@prisma/client";
-import { IUserUseCase } from "../../../domain/useCases/user/protocols/user-usecase";
+import { IUserUseCase } from "../../../domain/user-useCases/protocols/user-usecase";
 import {
   HttpResponse,
   InvalidParamError,
@@ -9,12 +8,14 @@ import {
 type props = {
   userUseCase: IUserUseCase;
 };
-interface request {
-  body: User;
-  params: {
-    id: string;
-  };
+interface data {
+  id: string;
   file: Express.Multer.File;
+  city: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: number;
 }
 
 interface useRoutes {
@@ -24,8 +25,8 @@ interface useRoutes {
 export class UserRoutes implements useRoutes {
   constructor(public props: props) {}
 
-  async getById(request: request) {
-    const { id } = request.params;
+  async getById(data: data) {
+    const { id } = data;
     if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));
 
     const user = await this.props.userUseCase.loadById(id);
@@ -40,10 +41,10 @@ export class UserRoutes implements useRoutes {
     return HttpResponse.ok({ users });
   }
 
-  async update(request: request) {
-    const { id } = request.params;
-    const { city, email, firstName, lastName, phoneNumber } = request.body;
-    const perfilPhoto = request.file?.filename;
+  async update(data: data) {
+    const { id } = data;
+    const { city, email, firstName, lastName, phoneNumber } = data;
+    const perfilPhoto = data.file?.filename;
 
     if (!email) return HttpResponse.badRequest(new InvalidParamError("email"));
     if (!firstName)

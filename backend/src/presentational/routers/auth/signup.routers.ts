@@ -1,31 +1,26 @@
-import { IUserUseCase } from "../../../domain/useCases/user/protocols/user-usecase";
 import { emailValidator } from "../../../utils/protocols/email-validator";
 import {
   HttpResponse,
   InvalidParamError,
   NotEqualError,
 } from "../../../utils/errors";
-import { userSignup } from "../user/protocols/userSignup";
+import { userSignup } from "./protocols/userSignup";
+import { IUserUseCase } from "../../../domain/user-useCases/protocols/user-usecase";
 
 type signup = {
   emailValidator: emailValidator;
   useUserCase: IUserUseCase;
 };
 
-type request = {
-  body: userSignup;
-};
-
 interface sign {
-  signup: (request: request) => Promise<unknown>;
+  signup: (data: userSignup) => Promise<unknown>;
 }
 
 export class SignupRouter implements sign {
   constructor(private props: signup) {}
 
-  async signup(request: request) {
-    const { email, password, confirmPassword, firstName, lastName } =
-      request.body;
+  async signup(data: userSignup) {
+    const { email, password, confirmPassword, firstName, lastName } = data;
     try {
       if (!firstName)
         return HttpResponse.badRequest(new InvalidParamError("firstName"));

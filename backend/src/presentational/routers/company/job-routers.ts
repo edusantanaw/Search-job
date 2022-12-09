@@ -1,5 +1,5 @@
-import { request } from "../../../utils/protocols/jobRequest";
-import { jobUseCase } from "../../../domain/useCases/company/protocols/job-useCase";
+import { data } from "../../../utils/protocols/jobRequest";
+import { jobUseCase } from "../../../domain/company-useCases/protocols/job-useCase";
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
 
 interface props {
@@ -9,18 +9,17 @@ interface props {
 export class JobRouter {
   constructor(private props: props) {}
 
-  async create(request: request) {
-    const { vancacyFor } = request.body;
-    const { companyId } = request.params;
+  async create(data: data) {
+    const { vacancyFor, companyId } = data;
     try {
-      if (!vancacyFor)
-        return HttpResponse.badRequest(new InvalidParamError("vancacyFor"));
+      if (!vacancyFor)
+        return HttpResponse.badRequest(new InvalidParamError("vacancyFor"));
 
       if (!companyId)
-        return HttpResponse.badRequest(new InvalidParamError("vancacyFor"));
+        return HttpResponse.badRequest(new InvalidParamError("vacancyFor"));
 
       const vancacy = await this.props.jobUseCase.create({
-        vancacyFor,
+        vacancyFor,
         CompanyId: companyId,
       });
       return vancacy;
@@ -29,9 +28,8 @@ export class JobRouter {
     }
   }
 
-  async updateStatus(request: request) {
-    const { id } = request.params;
-    const { status } = request.body;
+  async updateStatus(data: data) {
+    const { id, status } = data;
 
     try {
       if (!status)
@@ -48,15 +46,15 @@ export class JobRouter {
 
   async getAll() {
     try {
-      const vancacy = await this.props.jobUseCase.getAllVancacy();
+      const vancacy = await this.props.jobUseCase.getAll();
       return vancacy;
     } catch (error) {
       return error;
     }
   }
 
-  async getByid(request: request) {
-    const { id } = request.params;
+  async getByid(data: data) {
+    const { id } = data;
     try {
       if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));
       const vancacy = await this.props.jobUseCase.getById(id);

@@ -1,7 +1,7 @@
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
-import { companyRegister } from "../../../domain/useCases/company/protocols/companyRegister";
+import { companyRegister } from "../../../domain/company-useCases/protocols/companyRegister";
 import { emailValidator } from "../../../utils/protocols/email-validator";
-import { CreateCompanyUseCase } from "../../../domain/useCases/company/protocols/create-company-useCase";
+import { CreateCompanyUseCase } from "../../../domain/company-useCases/protocols/create-company-useCase";
 
 type registerRouter = {
   emailValidator: emailValidator;

@@ -1,10 +1,6 @@
-export type request = {
-  body: {
-    vancacyFor: string;
-    status: boolean;
-  };
-  params: {
-    id: string;
-    companyId: string;
-  };
+export type data = {
+  vacancyFor: string;
+  status: boolean;
+  id: string;
+  companyId: string;
 };

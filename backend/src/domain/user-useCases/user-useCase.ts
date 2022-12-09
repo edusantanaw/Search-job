@@ -1,15 +1,15 @@
-import { verifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/protocols/VerifyEmailAlreadyBeenUsed";
-import { encrypter } from "../../../utils/protocols/encrypter";
-import { generateToken } from "../../../utils/protocols/generateToken";
+import { verifyEmailAlreadyBeenUsed } from "../../presentational/helpers/protocols/VerifyEmailAlreadyBeenUsed";
+import { encrypter } from "../../utils/protocols/encrypter";
+import { generateToken } from "../../utils/protocols/generateToken";
 import {
   User,
   userRepository,
-} from "../../../infra/repositores/protocols/repositorys/UserRepository";
+} from "../../infra/repositores/protocols/UserRepository";
 import {
   emailAlreadyUsed,
   HttpResponse,
   NotFoundError,
-} from "../../../utils/errors";
+} from "../../utils/errors";
 
 import { IUserUseCase } from "./protocols/user-usecase";
 type props = {
@@ -30,9 +30,7 @@ export class UserUseCase implements IUserUseCase {
 
     const hashPassword = await this.props.encrypter.genHash(data.password);
     data.password = hashPassword;
-    const user = await this.props.userRepository.save({
-      ...data,
-    });
+    const user = await this.props.userRepository.save(data);
 
     const accessToken = this.props.generateToken.generate(user.id || "");
 

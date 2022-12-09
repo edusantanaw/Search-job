@@ -1,20 +1,20 @@
-import { job } from "../../../prisma/client";
-import { jobRepository } from "../../../infra/repositores/protocols/repositorys/job-repository";
-import { HttpResponse, NotFoundError } from "../../../utils/errors";
+import { job } from "../../prisma/client";
+import { jobRepository } from "../../infra/repositores/protocols/job-repository";
+import { HttpResponse, NotFoundError } from "../../utils/errors";
+import { jobUseCase } from "./protocols/job-useCase";
 
 interface props {
   jobRepository: jobRepository;
 }
 
-export class JobUseCase {
+export class JobUseCase implements jobUseCase {
   constructor(private props: props) {}
 
-  async create(data: {
-    vacancyFor: string;
-    CompanyId: string;
-    openStatus: true; // open by default
-  }) {
-    const vancacy = await this.props.jobRepository.create(data);
+  async create(data: { vacancyFor: string; CompanyId: string }) {
+    const vancacy = await this.props.jobRepository.create({
+      ...data,
+      openStatus: true,
+    });
     return vancacy;
   }
 

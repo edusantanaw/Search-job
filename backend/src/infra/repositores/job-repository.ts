@@ -1,7 +1,8 @@
+import { Job } from "@prisma/client";
 import { client, job } from "../../prisma/client";
-import { jobParams } from "./protocols/repositorys/job-repository";
+import { jobParams, jobRepository } from "./protocols/job-repository";
 
-export class JobRepository {
+export class JobRepository implements jobRepository {
   async create(data: jobParams) {
     const vacancy = await job.create({
       data: data,
@@ -10,20 +11,23 @@ export class JobRepository {
   }
 
   async getJobById(id: string) {
-    const vancacy = await client.$queryRaw`
+    const vancacy: Job = await client.$queryRaw`
         select * from job 
         inner join company.id = job."CompanyId"
         where id = ${id};
     `;
+    if (!vancacy) return null;
     return vancacy;
   }
 
   async getJobsByName(name: string) {
-    const vancacys = await client.$queryRaw`
+    const vancacys: Job[] = await client.$queryRaw`
         select * from job
         inner join company on company.id = job."CompanyId"
         where vacancyFor like ${`%${name}%`}; 
     `;
+
+    if (vancacys.length === 0) return null;
     return vancacys;
   }
 
