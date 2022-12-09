@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { UserUseCase } from "../../../protocols/useCases/create-user-use0case";
+import { IUserUseCase } from "../../../domain/useCases/user/protocols/user-usecase";
 import {
   HttpResponse,
   InvalidParamError,
@@ -7,7 +7,7 @@ import {
 } from "../../../utils/errors";
 
 type props = {
-  userUseCase: UserUseCase;
+  userUseCase: IUserUseCase;
 };
 interface request {
   body: User;

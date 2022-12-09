@@ -1,25 +1,26 @@
-import { verifyEmailAlreadyBeenUsed } from "../../../presentational/protocols/VerifyEmailAlreadyBeenUsed";
-import { encrypter } from "../../../protocols/utils/encrypter";
-import { generateToken } from "../../../protocols/utils/generateToken";
+import { verifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/protocols/VerifyEmailAlreadyBeenUsed";
+import { encrypter } from "../../../utils/protocols/encrypter";
+import { generateToken } from "../../../utils/protocols/generateToken";
 import {
   User,
   userRepository,
-} from "../../../protocols/repositorys/UserRepository";
+} from "../../../infra/repositores/protocols/repositorys/UserRepository";
 import {
   emailAlreadyUsed,
   HttpResponse,
   NotFoundError,
 } from "../../../utils/errors";
 
-type createUser = {
+import { IUserUseCase } from "./protocols/user-usecase";
+type props = {
   userRepository: userRepository;
   encrypter: encrypter;
   generateToken: generateToken;
   verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed;
 };
 
-export class UserUseCase {
-  constructor(private props: createUser) {}
+export class UserUseCase implements IUserUseCase {
+  constructor(private props: props) {}
 
   async create(data: User) {
     const verify = await this.props.verifyEmailAlreadyBeenUsed.verify(
@@ -43,7 +44,7 @@ export class UserUseCase {
     return user;
   }
 
-  async getAll() {
+  async loadAll() {
     const users = this.props.userRepository.loadAll();
     return users;
   }

@@ -1,5 +1,6 @@
-import { emailValidator } from "../../../protocols/utils/email-validator";
+import { emailValidator } from "../../../utils/protocols/email-validator";
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
+import { authUseCase } from "../../../domain/useCases/user/protocols/auth-useCases";
 
 type LoginProps = {
   authUseCase: authUseCase;

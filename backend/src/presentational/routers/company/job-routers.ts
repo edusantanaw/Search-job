@@ -1,5 +1,5 @@
-import { request } from "../../../protocols/requests/jobRequest";
-import { jobUseCase } from "../../../protocols/useCases/job-useCase";
+import { request } from "../../../utils/protocols/jobRequest";
+import { jobUseCase } from "../../../domain/useCases/company/protocols/job-useCase";
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
 
 interface props {
@@ -61,6 +61,8 @@ export class JobRouter {
       if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));
       const vancacy = await this.props.jobUseCase.getById(id);
       return vancacy;
-    } catch (error) {}
+    } catch (error) {
+      return error;
+    }
   }
 }

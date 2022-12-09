@@ -1,5 +1,5 @@
 import { client, job } from "../../prisma/client";
-import { jobParams } from "../../protocols/repositorys/job-repository";
+import { jobParams } from "./protocols/repositorys/job-repository";
 
 export class JobRepository {
   async create(data: jobParams) {

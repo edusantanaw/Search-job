@@ -9,7 +9,7 @@ export interface User extends user {
   id?: string;
   phoneNumber?: string | null;
   perfilPhoto?: string | null;
-  city: string | null;
+  city?: string | null;
   password: string;
 }
 

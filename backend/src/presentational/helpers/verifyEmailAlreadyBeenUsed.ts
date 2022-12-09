@@ -1,4 +1,4 @@
-import { userRepository } from "../../protocols/repositorys/UserRepository";
+import { userRepository } from "../../infra/repositores/protocols/repositorys/UserRepository";
 
 export class VerifyEmailAlreadyBeenUsed {
   constructor(private loadUserRepository: userRepository) {

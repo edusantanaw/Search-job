@@ -1,26 +1,31 @@
-import { createUserUseCase } from "../../../protocols/useCases/create-user-use0case";
-import { emailValidator } from "../../../protocols/utils/email-validator";
+import { IUserUseCase } from "../../../domain/useCases/user/protocols/user-usecase";
+import { emailValidator } from "../../../utils/protocols/email-validator";
 import {
   HttpResponse,
   InvalidParamError,
   NotEqualError,
 } from "../../../utils/errors";
-import { userSignup } from "../../protocols/userSignup";
+import { userSignup } from "../user/protocols/userSignup";
 
 type signup = {
   emailValidator: emailValidator;
-  createUserUseCase: createUserUseCase;
+  useUserCase: IUserUseCase;
 };
 
 type request = {
-  body: userSignup
+  body: userSignup;
+};
+
+interface sign {
+  signup: (request: request) => Promise<unknown>;
 }
 
-export class SignupRouter {
+export class SignupRouter implements sign {
   constructor(private props: signup) {}
 
   async signup(request: request) {
-    const { email, password, confirmPassword, firstName, lastName } = request.body;
+    const { email, password, confirmPassword, firstName, lastName } =
+      request.body;
     try {
       if (!firstName)
         return HttpResponse.badRequest(new InvalidParamError("firstName"));
@@ -46,7 +51,7 @@ export class SignupRouter {
       if (!isValid)
         return HttpResponse.badRequest(new InvalidParamError("email"));
 
-      const create = await this.props.createUserUseCase.create({
+      const create = await this.props.useUserCase.create({
         firstName,
         email,
         lastName,

@@ -1,5 +1,5 @@
 import { job } from "../../../prisma/client";
-import { jobRepository } from "../../../protocols/repositorys/job-repository";
+import { jobRepository } from "../../../infra/repositores/protocols/repositorys/job-repository";
 import { HttpResponse, NotFoundError } from "../../../utils/errors";
 
 interface props {

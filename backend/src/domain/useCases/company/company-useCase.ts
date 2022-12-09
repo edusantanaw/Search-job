@@ -1,7 +1,7 @@
 import {
   companyRegister,
   companyRepository,
-} from "../../../protocols/useCases/companyRegister";
+} from "./protocols/companyRegister";
 import { HttpResponse, NotFoundError } from "../../../utils/errors";
 
 export class CompanyUseCase {
@@ -23,6 +23,6 @@ export class CompanyUseCase {
   async getById(id: string) {
     const company = await this.companyRepository.loadById(id);
     if (!company) return HttpResponse.badRequest(new NotFoundError("company"));
-    return this.companyRepository;
+    return company;
   }
 }
