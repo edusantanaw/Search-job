@@ -1,8 +1,11 @@
 import { Company } from "@prisma/client";
 import { company, client } from "../../prisma/client";
-import { companyRegister } from "../../domain/company-useCases/protocols/companyRegister";
+import {
+  companyRegister,
+  companyRepository,
+} from "../../domain/company-useCases/protocols/companyRegister";
 
-export class CompanyRepository {
+export class CompanyRepository implements companyRepository {
   async save(data: companyRegister) {
     const companyResponse = await company.create({
       data: data,
@@ -17,6 +20,11 @@ export class CompanyRepository {
       },
     });
     return companyResponse;
+  }
+
+  async loadAll() {
+    const companys = await company.findMany();
+    return companys;
   }
 
   async searchByName(name: string) {

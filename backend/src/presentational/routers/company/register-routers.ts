@@ -2,6 +2,7 @@ import { HttpResponse, InvalidParamError } from "../../../utils/errors";
 import { companyRegister } from "../../../domain/company-useCases/protocols/companyRegister";
 import { emailValidator } from "../../../utils/protocols/email-validator";
 import { CreateCompanyUseCase } from "../../../domain/company-useCases/protocols/create-company-useCase";
+import { Controller } from "../../../utils/protocols/controller";
 
 type registerRouter = {
   emailValidator: emailValidator;
@@ -15,10 +16,10 @@ type request = {
   };
 };
 
-export class CompanyRegisterRouter {
+export class CompanyRegisterRouter implements Controller {
   constructor(private props: registerRouter) {}
 
-  async register(request: request) {
+  async handle(request: request) {
     const { name, description, perfilLogo, email, phone } = request.body;
     const { ownerId } = request.params;
 
@@ -48,6 +49,6 @@ export class CompanyRegisterRouter {
       perfilLogo,
       phone,
     });
-    return company;
+    return HttpResponse.ok({ company });
   }
 }

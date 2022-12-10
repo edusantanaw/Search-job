@@ -1,16 +1,25 @@
-import { NotFoundError } from "../../../utils/errors/not-found";
-import { encrypter } from "../../../utils/protocols/encrypter";
-import { generateToken } from "../../../utils/protocols/generateToken";
-import { userRepository } from "../../../infra/repositores/protocols/repositorys/UserRepository";
-import { HttpResponse } from "../../../utils/errors/http-reponse";
+import { NotFoundError } from "../../utils/errors/not-found";
+import { encrypter } from "../../utils/protocols/encrypter";
+import { generateToken } from "../../utils/protocols/generateToken";
+import { HttpResponse } from "../../utils/errors/http-reponse";
+import { userRepository } from "../../infra/repositores/protocols/UserRepository";
 
-interface authUseCase {
-  loadUserRepository: userRepository;
-  encrypter: encrypter;
-  generateToken: generateToken;
+export interface signinUseCase {
+  auth: (
+    email: string,
+    password: string
+  ) => Promise<
+    | string
+    | {
+        statusCode: number;
+        body: {
+          error: string;
+        };
+      }
+  >;
 }
 
-export class AuthUseCase implements authUseCase {
+export class SigninUseCase implements signinUseCase {
   constructor(
     public loadUserRepository: userRepository,
     public encrypter: encrypter,

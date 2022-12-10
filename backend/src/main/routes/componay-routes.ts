@@ -1,6 +1,6 @@
 import { Router } from "express";
 import adapt from "../adapters/express-router-adapter";
-import { CompanyRouterCompose } from "../composers/company/company-router-componser";
+import CompanyRegisterCompose from "../composers/company/company-register-composer";
 import multer from "multer";
 import { MulterConfig } from "../middlewares/multer";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken";
@@ -12,6 +12,6 @@ export default (router: Router): void => {
     "/register",
     multerMiddleware,
     verifyTokenMiddleware,
-    adapt(CompanyRouterCompose.compose().register)
+    adapt(CompanyRegisterCompose.compose())
   );
 };

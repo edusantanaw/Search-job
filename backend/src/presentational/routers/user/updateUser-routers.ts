@@ -1,0 +1,35 @@
+import {
+  updateUserUseCase,
+  data,
+} from "../../../domain/user-useCases/protocols/updateUserUseCase";
+import { HttpResponse, InvalidParamError } from "../../../utils/errors";
+import { Controller } from "../../../utils/protocols/controller";
+
+export class UserRoutes implements Controller {
+  constructor(private updateUserUseCase: updateUserUseCase) {}
+
+  async handle(data: data) {
+    const { id } = data;
+    const { city, email, firstName, lastName, phoneNumber } = data;
+    const perfilPhoto = data.file?.filename;
+
+    if (!email) return HttpResponse.badRequest(new InvalidParamError("email"));
+    if (!firstName)
+      return HttpResponse.badRequest(new InvalidParamError("first name"));
+
+    if (!lastName)
+      return HttpResponse.badRequest(new InvalidParamError("last name"));
+
+    const userUpdated = await this.updateUserUseCase.update({
+      id,
+      city,
+      email,
+      phoneNumber,
+      firstName,
+      lastName,
+      perfilPhoto,
+    });
+
+    return HttpResponse.ok({ userUpdated });
+  }
+}

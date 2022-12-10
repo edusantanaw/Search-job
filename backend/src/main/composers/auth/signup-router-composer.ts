@@ -1,34 +1,28 @@
-import { AuthUseCase } from "../../../domain/user-useCases/auth-useCase";
-import { UserUseCase } from "../../../domain/user-useCases/user-useCase";
+import { CreateUseCase } from "../../../domain/user-useCases/createUserUseCase";
 import { UserRepository } from "../../../infra/repositores/user-repository";
 import { VerifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/verifyEmailAlreadyBeenUsed";
-import AuthRouter from "../../../presentational/routers/auth/auth.routers";
+import { SignupRouter } from "../../../presentational/routers/auth/signupRouter";
 import { EmailValidator } from "../../../utils/helpers/email-validator";
 import { Encrypter } from "../../../utils/helpers/encrypter";
 import { GenerateToken } from "../../../utils/helpers/token-generate";
 
-export default class SigninRouterComposer {
+export default class SignupComposer {
   static compose() {
     const emailValidator = new EmailValidator();
-    const userRepository = new UserRepository();
     const encrypter = new Encrypter();
-    const generateToken = new GenerateToken("secret");
-
+    const userRepository = new UserRepository();
     const verifyEmailAlreadyBeenUsed = new VerifyEmailAlreadyBeenUsed(
       userRepository
     );
-    const authUseCase = new AuthUseCase(
-      userRepository,
+    const generateToken = new GenerateToken("secret");
+
+    const signupUseCase = new CreateUseCase({
       encrypter,
-      generateToken
-    );
-    const userUseCase = new UserUseCase({
-      encrypter,
-      generateToken,
       userRepository,
       verifyEmailAlreadyBeenUsed,
+      generateToken,
     });
 
-    return new AuthRouter({ authUseCase, emailValidator, userUseCase });
+    return new SignupRouter(signupUseCase, emailValidator);
   }
 }

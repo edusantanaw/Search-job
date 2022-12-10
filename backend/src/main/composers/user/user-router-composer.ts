@@ -1,7 +1,7 @@
-import { UserUseCase } from "../../../domain/user-useCases/user-useCase";
+import { UserUseCase } from "../../../domain/user-useCases/createUserUseCase";
 import { UserRepository } from "../../../infra/repositores/user-repository";
 import { VerifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/verifyEmailAlreadyBeenUsed";
-import { UserRoutes } from "../../../presentational/routers/user/user-routers";
+import { UserRoutes } from "../../../presentational/routers/user/updateUser-routers";
 
 import { Encrypter } from "../../../utils/helpers/encrypter";
 import { GenerateToken } from "../../../utils/helpers/token-generate";

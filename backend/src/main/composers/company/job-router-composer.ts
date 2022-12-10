@@ -1,11 +1,12 @@
-import { JobUseCase } from "../../../domain/company-useCases/job-useCase";
+import { JobUseCase } from "../../../domain/job/createJobUseCase";
 import { JobRepository } from "../../../infra/repositores/job-repository";
-import { JobRouter } from "../../../presentational/routers/company/job-routers";
+import { CreateJobRouter } from "../../../presentational/routers/job/create-router";
 
-export class JobRouterComposer {
+export class CreateJobComposer {
   static compose() {
     const jobRepository = new JobRepository();
-    const jobUseCase = new JobUseCase({ jobRepository });
-    return new JobRouter({ jobUseCase });
+    const createJobUseCase = new JobUseCase(jobRepository);
+
+    return new CreateJobRouter(createJobUseCase);
   }
 }
