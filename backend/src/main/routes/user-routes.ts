@@ -1,10 +1,12 @@
 import { Router } from "express";
 import adapt from "../adapters/express-router-adapter";
-import { UserRouterComposer } from "../composers/user/user-router-composer";
+import { LoadUserByIdComposer } from "../composers/user/loadUserById-Composer";
 
 import multer from "multer";
 import { MulterConfig } from "../middlewares/multer";
 import { verifyTokenMiddleware } from "../middlewares/verifyToken";
+import { LoadAllUsersComposer } from "../composers/user/LoadAllUsers-Composer";
+import { UpdateUserComposer } from "../composers/user/updateUser-Composer";
 
 const multerMiddleware = multer(MulterConfig).single("file");
 
@@ -12,17 +14,17 @@ export default (router: Router): void => {
   router.get(
     "/users",
     verifyTokenMiddleware,
-    adapt(UserRouterComposer.compose().getAll)
+    adapt(LoadAllUsersComposer.compose())
   );
   router.get(
     "/user/:id",
     verifyTokenMiddleware,
-    adapt(UserRouterComposer.compose().getById)
+    adapt(LoadUserByIdComposer.compose())
   );
   router.patch(
     "/user/update/:id",
     multerMiddleware,
     verifyTokenMiddleware,
-    adapt(UserRouterComposer.compose().update)
+    adapt(UpdateUserComposer.compose())
   );
 };

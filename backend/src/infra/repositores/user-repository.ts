@@ -1,7 +1,8 @@
+import { data } from "../../domain/user-useCases/protocols/updateUserUseCase";
 import { user } from "../../prisma/client";
-import { User } from "./protocols/UserRepository";
+import { IUser, userRepository } from "./protocols/UserRepository";
 
-export class UserRepository {
+export class UserRepository implements userRepository {
   async loadByEmail(email: string) {
     const userResponse = await user.findFirst({
       where: {
@@ -11,7 +12,7 @@ export class UserRepository {
     return userResponse;
   }
 
-  async save(data: User) {
+  async save(data: IUser) {
     const newUser = await user.create({
       data: data,
     });
@@ -31,12 +32,18 @@ export class UserRepository {
     return users;
   }
 
-  async update(data: User) {
+  async update(data: data) {
     const userUpdated = await user.update({
       where: {
         id: data.id,
       },
-      data: data,
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        perfilPhoto: data.file?.filename,
+        city: data.city,
+      },
     });
     return userUpdated;
   }

@@ -16,13 +16,13 @@ export class HttpResponse {
       },
     };
   }
-  static notFound(error: {message: string}){
+  static notFound(error: { message: string }) {
     return {
       statusCode: 400,
       body: {
-        error: error.message
-      }
-    }
+        error: error.message,
+      },
+    };
   }
   static unauthotizedError() {
     return {
@@ -31,6 +31,12 @@ export class HttpResponse {
         error: new UnauthorizedError("unauthorized"),
       },
     };
+  }
 
+  static catchError(error: any) {
+    return {
+      statusCode: 400,
+      body: error,
+    };
   }
 }

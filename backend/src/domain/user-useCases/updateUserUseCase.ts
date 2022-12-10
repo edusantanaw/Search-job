@@ -1,33 +1,26 @@
-import {
-  User,
-  userRepository,
-} from "../../infra/repositores/protocols/UserRepository";
+import { userRepository } from "../../infra/repositores/protocols/UserRepository";
 import { verifyEmailAlreadyBeenUsed } from "../../presentational/helpers/protocols/VerifyEmailAlreadyBeenUsed";
-import { emailAlreadyUsed, HttpResponse } from "../../utils/errors";
+import { emailAlreadyUsed, InvalidParamError } from "../../utils/errors";
 import { NotFoundError } from "../../utils/errors/not-found";
+import { data, updateUserUseCase } from "./protocols/updateUserUseCase";
 
-export class UpdateUserUseCase {
+export class UpdateUserUseCase implements updateUserUseCase {
   constructor(
     private userRepository: userRepository,
     private verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed
   ) {}
-  async update(userRequest: User) {
-    if (userRequest.id) {
-      const verifyUserExists = await this.userRepository.loadById(
-        userRequest.id
-      );
-      if (!verifyUserExists)
-        throw HttpResponse.badRequest(new NotFoundError("user"));
+  async update(data: data) {
+    if (data.id) {
+      const verifyUserExists = await this.userRepository.loadById(data.id);
+      if (!verifyUserExists) throw new NotFoundError("user");
 
-      if (userRequest.email !== verifyUserExists.email) {
-        const verify = await this.verifyEmailAlreadyBeenUsed.verify(
-          userRequest.email
-        );
-        if (!verify) return HttpResponse.badRequest(new emailAlreadyUsed());
+      if (data.email !== verifyUserExists.email) {
+        const verify = await this.verifyEmailAlreadyBeenUsed.verify(data.email);
+        if (!verify) throw new emailAlreadyUsed();
       }
-      const userUpdated = await this.userRepository.update(userRequest);
+      const userUpdated = await this.userRepository.update(data);
       return userUpdated;
     }
-    return null;
+    throw new InvalidParamError("id");
   }
 }

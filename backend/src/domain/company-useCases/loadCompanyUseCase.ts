@@ -1,4 +1,3 @@
-import { HttpResponse } from "../../utils/errors";
 import { NotFoundError } from "../../utils/errors/not-found";
 import { companyRepository } from "./protocols/companyRegister";
 
@@ -7,13 +6,13 @@ export class LoadCompanyUseCase {
 
   async loadById(id: string) {
     const company = await this.companyRepository.loadById(id);
-    if (!company) return HttpResponse.badRequest(new NotFoundError("company"));
-    return company;
+    if (company) return company;
+    throw new NotFoundError("company");
   }
 
   async loadAll() {
-    const company = await this.companyRepository.loadAll();
-    if (!company) return HttpResponse.badRequest(new NotFoundError("companys"));
-    return company;
+    const companys = await this.companyRepository.loadAll();
+    if (companys) return companys;
+    throw new NotFoundError("companys");
   }
 }

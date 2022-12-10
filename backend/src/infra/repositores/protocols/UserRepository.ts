@@ -1,3 +1,6 @@
+import { User } from "@prisma/client";
+import { data } from "../../../domain/user-useCases/protocols/updateUserUseCase";
+
 export type user = {
   firstName: string;
   lastName: string;
@@ -5,7 +8,7 @@ export type user = {
   password: string;
 };
 
-export interface User extends user {
+export interface IUser extends user {
   id?: string;
   phoneNumber?: string | null;
   perfilPhoto?: string | null;
@@ -17,6 +20,6 @@ export interface userRepository {
   loadByEmail: (email: string) => Promise<User | null>;
   save: (data: user) => Promise<User>;
   loadById: (id: string) => Promise<User | null>;
-  update: (data: User) => Promise<User>;
+  update: (data: data) => Promise<User>;
   loadAll: () => Promise<User[]>;
 }

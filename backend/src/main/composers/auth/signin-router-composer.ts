@@ -5,7 +5,7 @@ import { EmailValidator } from "../../../utils/helpers/email-validator";
 import { Encrypter } from "../../../utils/helpers/encrypter";
 import { GenerateToken } from "../../../utils/helpers/token-generate";
 
-export default class SigninRouterComposer {
+export default class SigninComposer {
   static compose() {
     const emailValidator = new EmailValidator();
     const encrypter = new Encrypter();

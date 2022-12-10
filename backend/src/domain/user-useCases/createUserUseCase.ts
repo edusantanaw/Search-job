@@ -5,7 +5,7 @@ import {
   User,
   userRepository,
 } from "../../infra/repositores/protocols/UserRepository";
-import { emailAlreadyUsed, HttpResponse } from "../../utils/errors";
+import { emailAlreadyUsed } from "../../utils/errors";
 
 type props = {
   userRepository: userRepository;
@@ -21,14 +21,15 @@ export class CreateUseCase {
     const verify = await this.props.verifyEmailAlreadyBeenUsed.verify(
       data.email
     );
-    if (verify) throw HttpResponse.badRequest(new emailAlreadyUsed());
+    if (verify) throw new emailAlreadyUsed();
 
     const hashPassword = await this.props.encrypter.genHash(data.password);
     data.password = hashPassword;
     const user = await this.props.userRepository.save(data);
 
-    const accessToken = this.props.generateToken.generate(user.id || "");
-
-    return { user, accessToken };
+    if (user.id) {
+      const accessToken = this.props.generateToken.generate(user.id);
+      return { user, accessToken };
+    }
   }
 }

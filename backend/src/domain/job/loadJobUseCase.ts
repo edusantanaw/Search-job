@@ -1,19 +1,19 @@
 import { jobRepository } from "../../infra/repositores/protocols/job-repository";
-import { HttpResponse } from "../../utils/errors";
 import { NotFoundError } from "../../utils/errors/not-found";
+import { loadJobUseCase } from "./protocols/ijob-useCase";
 
-export class LoadJobUseCase {
+export class LoadJobUseCase implements loadJobUseCase {
   constructor(private jobRepository: jobRepository) {}
 
   async loadAll() {
     const vacancy = await this.jobRepository.getAll();
-    if (!vacancy) return HttpResponse.badRequest(new NotFoundError("jobs"));
-    return vacancy;
+    if (vacancy) return vacancy;
+    throw new NotFoundError("vacancys");
   }
 
   async loadById(id: string) {
     const vancacy = await this.jobRepository.getJobById(id);
-    if (!vancacy) return HttpResponse.badRequest(new NotFoundError("vancacy"));
-    return vancacy;
+    if (vancacy) return vancacy;
+    throw new NotFoundError("vacancys");
   }
 }

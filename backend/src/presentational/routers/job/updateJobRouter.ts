@@ -8,15 +8,19 @@ export class UpdateRouter implements Controller {
   constructor(private updateJobUseCase: updateJobUseCase) {}
 
   async handle(data: data) {
-    const { id, status } = data;
+    try {
+      const { id, status } = data;
 
-    if (!status)
-      return HttpResponse.badRequest(new InvalidParamError("status"));
+      if (!status)
+        return HttpResponse.badRequest(new InvalidParamError("status"));
 
-    if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));
+      if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));
 
-    const job = await this.updateJobUseCase.update(id, status);
-    if (!job) return HttpResponse.notFound(new NotFoundError("job"));
-    return HttpResponse.ok({ job });
+      const job = await this.updateJobUseCase.update(id, status);
+      if (!job) return HttpResponse.notFound(new NotFoundError("job"));
+      return HttpResponse.ok({ job });
+    } catch (error) {
+      return HttpResponse.catchError(error);
+    }
   }
 }
