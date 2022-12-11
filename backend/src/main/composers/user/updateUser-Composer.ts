@@ -4,7 +4,7 @@ import { VerifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/veri
 import { UpdateUserRoutes } from "../../../presentational/routers/user/updateUser-routers";
 
 export class UpdateUserComposer {
-  static composer() {
+  static compose() {
     const userRepository = new UserRepository();
     const verifyEmailAlreadyBeignUsed = new VerifyEmailAlreadyBeenUsed(
       userRepository

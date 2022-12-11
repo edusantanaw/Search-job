@@ -10,8 +10,8 @@ export class UpdateRouter implements Controller {
   async handle(data: data) {
     try {
       const { id, status } = data;
-
-      if (!status)
+      console.log(status);
+      if (status === undefined || status === null)
         return HttpResponse.badRequest(new InvalidParamError("status"));
 
       if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));

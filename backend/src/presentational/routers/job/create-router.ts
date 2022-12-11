@@ -8,12 +8,13 @@ export class CreateJobRouter implements Controller {
   async handle(data: { vacancyFor: string; CompanyId: string }) {
     try {
       const { vacancyFor, CompanyId } = data;
+      console.log(vacancyFor);
 
       if (!vacancyFor)
         return HttpResponse.badRequest(new InvalidParamError("vacancyFor"));
 
       if (!CompanyId)
-        return HttpResponse.badRequest(new InvalidParamError("vacancyFor"));
+        return HttpResponse.badRequest(new InvalidParamError("CompanyId"));
 
       const vancacy = await this.createJobUseCase.create({
         vacancyFor,

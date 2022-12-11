@@ -19,6 +19,7 @@ export class SigninUseCase implements signinUseCase {
 
   async auth(email: string, password: string) {
     const user = await this.loadUserRepository.loadByEmail(email);
+    console.log(user);
     if (!user) throw "User not found!";
 
     const isValid = await this.encrypter.compare(password, user.password);

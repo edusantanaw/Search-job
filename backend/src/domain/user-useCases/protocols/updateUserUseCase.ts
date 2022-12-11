@@ -2,14 +2,16 @@ import { User } from "@prisma/client";
 
 export interface data {
   id: string;
-  file?: Express.Multer.File;
-  city?: string;
+  req?: {
+    file: Express.Multer.File;
+  };
+  city: string | null;
   password?: string;
   email: string;
   firstName: string;
   lastName: string;
   phoneNumber: number | null;
-  perfilPhoto?: string;
+  perfilPhoto: string | null;
 }
 
 export interface updateUserUseCase {

@@ -1,15 +1,24 @@
-import { Options, diskStorage } from "multer";
-import { resolve } from "path";
+import multer from "multer";
+import { Request, Response, NextFunction } from "express";
 
-export const MulterConfig = {
-  dest: resolve(__dirname, "public"),
-  storage: diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, resolve(__dirname, "public"));
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.filename + "-" + Date.now() + ".jpg" || ".png" || ".webp");
-    },
-  }),
-  
-} as Options;
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "-" + Date.now() + ".jpg" || ".png" || ".webp");
+  },
+});
+
+const upload = multer({ storage: storage }).single("image");
+
+export const multerMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  upload(req, res, (err) => {
+    if (err) console.log(err);
+    next(undefined);
+  });
+};

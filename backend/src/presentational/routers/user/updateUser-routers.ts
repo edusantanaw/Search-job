@@ -11,8 +11,9 @@ export class UpdateUserRoutes implements Controller {
   async handle(data: data) {
     try {
       const { id } = data;
-      const { city, email, firstName, lastName, phoneNumber } = data;
-      const perfilPhoto = data.file?.filename;
+      const { city, email, req, firstName, lastName, phoneNumber } = data;
+      console.log(req);
+      let perfilPhoto = req?.file.filename ? req.file.filename : null;
 
       if (!email)
         return HttpResponse.badRequest(new InvalidParamError("email"));

@@ -12,6 +12,7 @@ export class LoadJobByIdRouter implements Controller {
   async handle(req: { id: string }) {
     try {
       const { id } = req;
+      console.log(id);
       if (!id) return HttpResponse.badRequest(new InvalidParamError("id"));
       const vacancy = await this.loadJobUseCase.loadById(id);
       if (!vacancy)

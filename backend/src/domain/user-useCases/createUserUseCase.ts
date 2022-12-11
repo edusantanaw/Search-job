@@ -2,7 +2,7 @@ import { verifyEmailAlreadyBeenUsed } from "../../presentational/helpers/protoco
 import { encrypter } from "../../utils/protocols/encrypter";
 import { generateToken } from "../../utils/protocols/generateToken";
 import {
-  User,
+  IUser,
   userRepository,
 } from "../../infra/repositores/protocols/UserRepository";
 import { emailAlreadyUsed } from "../../utils/errors";
@@ -17,10 +17,11 @@ type props = {
 export class CreateUseCase {
   constructor(public props: props) {}
 
-  async create(data: User) {
+  async create(data: IUser) {
     const verify = await this.props.verifyEmailAlreadyBeenUsed.verify(
       data.email
     );
+    console.log(verify);
     if (verify) throw new emailAlreadyUsed();
 
     const hashPassword = await this.props.encrypter.genHash(data.password);

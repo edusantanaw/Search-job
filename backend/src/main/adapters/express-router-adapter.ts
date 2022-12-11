@@ -7,8 +7,7 @@ const adapt = (method: Controller) => {
       ...req.body,
       ...req.params,
       ...req.query,
-      ...req.file,
-      ...req.files,
+      req,
     });
     res.status(httpResponse.statusCode).json(httpResponse.body);
   };

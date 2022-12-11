@@ -7,7 +7,7 @@ import {
 export class CompanyUseCase {
   constructor(private companyRepository: companyRepository) {}
 
-  async create(data: companyRegister) {
+  async create(data: any) {
     const verifyIfEmail = await this.companyRepository.loadByEmail(data.email);
     if (verifyIfEmail) throw new emailAlreadyUsed();
 

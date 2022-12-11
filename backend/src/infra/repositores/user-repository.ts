@@ -41,7 +41,7 @@ export class UserRepository implements userRepository {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        perfilPhoto: data.file?.filename,
+        perfilPhoto: data.perfilPhoto,
         city: data.city,
       },
     });
