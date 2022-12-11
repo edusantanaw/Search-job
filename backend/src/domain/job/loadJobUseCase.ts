@@ -16,4 +16,10 @@ export class LoadJobUseCase implements loadJobUseCase {
     if (vancacy) return vancacy;
     throw new NotFoundError("vacancys");
   }
+
+  async loadByName(name: string) {
+    const jobs = await this.jobRepository.getJobsByName(name);
+    if (!jobs) throw "Jobs not found!";
+    return jobs;
+  }
 }

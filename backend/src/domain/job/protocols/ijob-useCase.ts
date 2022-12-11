@@ -6,7 +6,8 @@ export interface createJobUseCase {
 
 export interface loadJobUseCase {
   loadById: (id: string) => Promise<Job | null>;
-  loadAll: () => Promise<Job[] | null>;
+  loadAll: () => Promise<Job[]>;
+  loadByName: (name: string) => Promise<Job[]>;
 }
 
 export interface updateJobUseCase {
