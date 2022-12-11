@@ -2,7 +2,7 @@ import { ApplyForJobUseCase } from "../../../domain/candidate/applyForJobUseCase
 import { ApplyRepository } from "../../../infra/repositores/applyRepository";
 import { JobRepository } from "../../../infra/repositores/job-repository";
 import { UserRepository } from "../../../infra/repositores/user-repository";
-import { ApplyForJob } from "../../../presentational/routers/apply/applyFor";
+import { ApplyForJobRouter } from "../../../presentational/routers/apply/applyForRouter";
 
 export class ApplyComposer {
   static compose() {
@@ -15,6 +15,6 @@ export class ApplyComposer {
       userRepository
     );
 
-    return new ApplyForJob(applyForJobUseCase);
+    return new ApplyForJobRouter(applyForJobUseCase);
   }
 }

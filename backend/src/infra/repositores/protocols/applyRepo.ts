@@ -2,7 +2,7 @@ import { ApplyJob } from "@prisma/client";
 
 export interface applyRepository {
   save: (userId: string, vacancyId: string) => Promise<void>;
-  loadAll: () => Promise<ApplyJob[]>;
+  loadAll: (vacancyId: string) => Promise<ApplyJob[]>;
   removeApply: (applyId: string) => Promise<void>;
   loadByUserIdAndVacancyId: (
     userId: string,

@@ -17,8 +17,9 @@ export class ApplyForJobUseCase implements applyForJobUseCase {
     if (!verifyUserExists) throw new NotFoundError("user");
 
     const verifyVacancyExists = await this.jobRepository.getJobById(vacancyId);
+
     if (!verifyVacancyExists) throw new NotFoundError("vacancy");
-    const candidates = await this.applyRepository.loadAll();
+    const candidates = await this.applyRepository.loadAll(vacancyId);
 
     const verifyUserAlreadyApply = candidates.filter(
       (candidate) => candidate.candidateId === userId
@@ -32,12 +33,14 @@ export class ApplyForJobUseCase implements applyForJobUseCase {
   }
 
   async removeApply(userId: string, vacancyId: string) {
-    const verifyVacancyExists =
-      await this.applyRepository.loadByUserIdAndVacancyId(userId, vacancyId);
+    const verifyUserApply = await this.applyRepository.loadByUserIdAndVacancyId(
+      userId,
+      vacancyId
+    );
 
-    if (!verifyVacancyExists) throw "User is not applied in this vacancy!";
+    if (!verifyUserApply) throw "User is not applied in this vacancy!";
 
-    await this.applyRepository.removeApply(verifyVacancyExists.id);
+    await this.applyRepository.removeApply(verifyUserApply.id);
 
     return true;
   }

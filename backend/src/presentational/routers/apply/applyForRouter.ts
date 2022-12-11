@@ -1,25 +1,20 @@
+import { applyForJobUseCase } from "../../../domain/candidate/protocols/apply-interface";
 import { HttpResponse, InvalidParamError } from "../../../utils/errors";
 import { Controller } from "../../../utils/protocols/controller";
 
-interface removeApplyUseCase {
-  remove: (userId: string, vacancyId: string) => Promise<boolean>;
-}
-
-export class RemoveApply implements Controller {
-  constructor(private removeApplyUseCase: removeApplyUseCase) {}
+export class ApplyForJobRouter implements Controller {
+  constructor(private applyForJobUseCase: applyForJobUseCase) {}
 
   async handle(req: { userId: string; vacancyId: string }) {
     try {
       const { userId, vacancyId } = req;
-
       if (!userId)
         return HttpResponse.badRequest(new InvalidParamError("userId"));
       if (!vacancyId)
         return HttpResponse.badRequest(new InvalidParamError("vacancyId"));
 
-      await this.removeApplyUseCase.remove(userId, vacancyId);
-
-      return HttpResponse.ok("success");
+      const apply = await this.applyForJobUseCase.apply(userId, vacancyId);
+      return HttpResponse.ok({ apply });
     } catch (error) {
       return HttpResponse.catchError(error);
     }

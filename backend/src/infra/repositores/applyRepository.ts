@@ -11,8 +11,12 @@ export class ApplyRepository implements applyRepository {
     });
     return;
   }
-  async loadAll() {
-    const candidates = await applyJob.findMany();
+  async loadAll(vacancyId: string) {
+    const candidates = await applyJob.findMany({
+      where: {
+        jobId: vacancyId,
+      },
+    });
     return candidates;
   }
 
