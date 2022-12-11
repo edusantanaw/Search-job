@@ -1,4 +1,4 @@
-import { candidateRepository } from "../../infra/repositores/protocols/candidateRepo";
+import { applyRepository } from "../../infra/repositores/protocols/applyRepo";
 import { jobRepository } from "../../infra/repositores/protocols/job-repository";
 import { userRepository } from "../../infra/repositores/protocols/UserRepository";
 import { NotFoundError } from "../../utils/errors/not-found";
@@ -6,7 +6,7 @@ import { applyForJobUseCase } from "./protocols/apply-interface";
 
 export class ApplyForJobUseCase implements applyForJobUseCase {
   constructor(
-    private candidateRepository: candidateRepository,
+    private applyRepository: applyRepository,
     private jobRepository: jobRepository,
     private userRepository: userRepository
   ) {}
@@ -18,16 +18,27 @@ export class ApplyForJobUseCase implements applyForJobUseCase {
 
     const verifyVacancyExists = await this.jobRepository.getJobById(vacancyId);
     if (!verifyVacancyExists) throw new NotFoundError("vacancy");
-    const candidates = await this.candidateRepository.loadAll();
+    const candidates = await this.applyRepository.loadAll();
 
-    const verifyUserAlreadyApply = candidates.map(
+    const verifyUserAlreadyApply = candidates.filter(
       (candidate) => candidate.candidateId === userId
     );
     if (verifyUserAlreadyApply.length > 0)
       throw "User Already applied for this vacancy!";
 
-    await this.candidateRepository.save(userId, vacancyId);
+    await this.applyRepository.save(userId, vacancyId);
 
     return "success";
+  }
+
+  async removeApply(userId: string, vacancyId: string) {
+    const verifyVacancyExists =
+      await this.applyRepository.loadByUserIdAndVacancyId(userId, vacancyId);
+
+    if (!verifyVacancyExists) throw "User is not applied in this vacancy!";
+
+    await this.applyRepository.removeApply(verifyVacancyExists.id);
+
+    return true;
   }
 }
