@@ -4,6 +4,7 @@ import { VerifyEmailAlreadyBeenUsed } from "../../../presentational/helpers/veri
 import { SignupRouter } from "../../../presentational/routers/auth/signupRouter";
 import { EmailValidator } from "../../../utils/helpers/email-validator";
 import { Encrypter } from "../../../utils/helpers/encrypter";
+import { SenderEmail } from "../../../utils/helpers/nodemailer";
 import { GenerateToken } from "../../../utils/helpers/token-generate";
 
 export default class SignupComposer {
@@ -15,12 +16,13 @@ export default class SignupComposer {
       userRepository
     );
     const generateToken = new GenerateToken("secret");
-
+    const senderEmail = new SenderEmail();
     const signupUseCase = new CreateUseCase({
       encrypter,
       userRepository,
       verifyEmailAlreadyBeenUsed,
       generateToken,
+      senderEmail,
     });
 
     return new SignupRouter(signupUseCase, emailValidator);

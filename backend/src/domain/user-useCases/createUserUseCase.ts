@@ -7,11 +7,16 @@ import {
 } from "../../infra/repositores/protocols/UserRepository";
 import { emailAlreadyUsed } from "../../utils/errors";
 
+interface senderEmail {
+  sender: (email: string) => Promise<void>;
+}
+
 type props = {
   userRepository: userRepository;
   encrypter: encrypter;
   generateToken: generateToken;
   verifyEmailAlreadyBeenUsed: verifyEmailAlreadyBeenUsed;
+  senderEmail: senderEmail;
 };
 
 export class CreateUseCase {
@@ -30,6 +35,7 @@ export class CreateUseCase {
 
     if (user.id) {
       const accessToken = this.props.generateToken.generate(user.id);
+      await this.props.senderEmail.sender(user.email);
       return { user, accessToken };
     }
   }
